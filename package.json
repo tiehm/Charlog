@@ -1,0 +1,28 @@
+{
+  "name": "charlog",
+  "version": "0.1.0",
+  "description": "Private Logger",
+  "main": "dist/index",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tiehm/Charlog.git"
+  },
+  "author": "tiehm <admin@tiehm.me> (https://tiehm.me)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tiehm/Charlog/issues"
+  },
+  "homepage": "https://github.com/tiehm/Charlog#readme",
+  "dependencies": {
+    "chalk": "^2.4.1",
+    "moment": "^2.22.2",
+    "pad": "^2.1.0"
+  },
+  "devDependencies": {
+    "@types/chalk": "^2.2.0",
+    "@types/node": "^10.5.0"
+  }
+}
