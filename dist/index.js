@@ -4,7 +4,16 @@ var path = require("path");
 var readline = require("readline");
 var moment = require("moment");
 var chalk_1 = require("chalk");
-var pad = require("pad");
+function pad(content, length) {
+    if (content.length >= length)
+        return content;
+    if (length < 1)
+        return content;
+    for (var i = 0; i < (length - content.length); i++) {
+        content += " ";
+    }
+    return content;
+}
 var Charlog = /** @class */ (function () {
     /**
      *

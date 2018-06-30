@@ -2,7 +2,18 @@ import * as path     from 'path';
 import * as readline from 'readline';
 import * as moment   from 'moment';
 import chalk         from 'chalk';
-import * as pad      from 'pad';
+
+function pad (content: string, length: number) : string {
+
+    if (content.length >= length) return content;
+    if (length < 1) return content;
+
+    for (let i = 0; i < (length - content.length); i++ ) {
+        content += " ";
+    }
+
+    return content;
+}
 
 export class Charlog {
 
