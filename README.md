@@ -3,7 +3,9 @@
 # Charlog &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/your/your-project/blob/master/LICENSE)
 > A different [signale](https://github.com/klauscfhq/signale).
 
-Charlog is a custom Logger with many features with the main focus to be appealing.
+Charlog is a custom Logger with many features with the main focus to be appealing. 
+
+This is heavily inspired by [signale](https://github.com/klauscfhq/signale), please use signale if you are looking for a fully supported and steady updated logger.
 
 ## Installing / Getting started
 
@@ -23,31 +25,71 @@ Logger.error('This is a cool %a', 'Error');
 
 ## Configuration
 
-``tag`` - The console tag
+The class constructor takes an ``options`` object.
 
-## Tests
+``interactive``  
+ - Type: ``Boolean``
+ - Default: ``false``
+ 
+ Enables the interactive mode. In this mode the recent logged line will be replaced with the new one.
+ 
+ ``uppercaseTag``
+- Type: ``Boolean``
+- Default: ``true``
 
-Describe and show how to run the tests with code examples.
-Explain what these tests test and why.
+Enables the caps lock for tags.
 
-```shell
-Give an example
-```
+``tag``
+- Type: ``String``
+- Default: ``Main``
 
-## Style guide
+The Tag which appears in front of the log message.
 
-Explain your code style and show how to check it.
+``date``
+- Type: ``Boolean``
+- Default: ``false``
 
-## Api Reference
+Enables that the date is shown before the log message.
 
-If the api is external, link to api documentation. If not describe your api including authentication methods as well as explaining all the endpoints with their required parameters.
+``timestamp``
+- Type: ``Boolean``
+- Default: ``false``
 
+Enables that the current time is shown before the log message.
 
-## Database
+``setFileLength``
+- Type: ``Number``
+- Default: ``0``
 
-Explaining what database (and version) has been used. Provide download links.
-Documents your database design and schemas, relations etc... 
+Set the length of the longest filename including extension (only needed if ``filename`` is enabled)
+
+``longestTagName``
+- Type: ``Number``
+- Default: ``0``
+
+Set the length of the longest tag name.
+
+``filename``
+- Type: ``Boolean``
+- Default: ``true``
+
+Enabling that the filename is shown before the log message.
+
+``loggers``
+- Type: ``Object``
+- Default: See below
+
+Set custom loggers.
+
+``Logger``
+
+````
+"nameOfLogger": {
+    tag: 'TAG',
+    color: 'color'
+}
+````
 
 ## Licensing
 
-State what the license is and how to find the text version of the license.
+MIT
