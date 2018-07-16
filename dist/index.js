@@ -65,8 +65,8 @@ var Charlog = /** @class */ (function () {
             this.date = typeof pkgConfig.date === 'undefined' ? false : pkgConfig.date;
             this.timestamp = typeof pkgConfig.timestamp === 'undefined' ? true : pkgConfig.timestamp;
             this.filename = typeof pkgConfig.filename === 'undefined' ? true : pkgConfig.filename;
-            this.longestFileName = typeof pkgConfig.longestFileName === 'undefined' ? 0 : pkgConfig.longestFileName + 2;
-            this.longestTagName = typeof pkgConfig.longestTagName === 'undefined' ? 0 : pkgConfig.longestTagName + 2;
+            this.longestFileName = typeof pkgConfig.setFileLength === 'undefined' ? 0 : pkgConfig.setFileLength + 2;
+            this.longestTagName = typeof pkgConfig.setTagLength === 'undefined' ? 0 : pkgConfig.setTagLength + 2;
             for (var logger in pkgConfig.loggers) {
                 if (!pkgConfig.loggers.hasOwnProperty(logger))
                     continue;
