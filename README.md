@@ -27,6 +27,8 @@ Logger.error('This is a cool %a', 'Error');
 
 The class constructor takes an ``options`` object.
 
+You can use all of these config options global when putting it into the package json file under "charlog".
+
 ``interactive``  
  - Type: ``Boolean``
  - Default: ``false``

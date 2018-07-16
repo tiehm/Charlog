@@ -1,6 +1,6 @@
 {
   "name": "charlog",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Private Logger",
   "main": "index.js",
   "scripts": {
@@ -18,7 +18,8 @@
   "homepage": "https://github.com/tiehm/Charlog#readme",
   "dependencies": {
     "chalk": "^2.4.1",
-    "moment": "^2.22.2"
+    "moment": "^2.22.2",
+    "pad": "^2.1.0"
   },
   "devDependencies": {
     "@types/chalk": "^2.2.0",

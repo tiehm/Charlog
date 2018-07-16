@@ -1,19 +1,9 @@
+import * as fs       from 'fs';
 import * as path     from 'path';
 import * as readline from 'readline';
 import * as moment   from 'moment';
 import chalk         from 'chalk';
-
-function pad (content: string, length: number) : string {
-
-    if (content.length >= length) return content;
-    if (length < 1) return content;
-
-    for (let i = 0; i < (length - content.length); i++ ) {
-        content += " ";
-    }
-
-    return content;
-}
+import * as pad      from 'pad';
 
 export class Charlog {
 
@@ -34,9 +24,9 @@ export class Charlog {
     private readonly interactive: boolean = false;
     private readonly uppercaseTag: boolean = true;
     private before: boolean = false;
-    private readonly tag: string;
-    private readonly date: boolean = true;
-    private readonly timestamp: boolean;
+    private readonly tag: string = 'MAIN';
+    private readonly date: boolean = false;
+    private readonly timestamp: boolean = true;
     private readonly filename: boolean = true;
     private loggers: {
         [name: string]: {
@@ -55,10 +45,14 @@ export class Charlog {
         success: {
             tag: 'success',
             color: 'green'
+        },
+        warn: {
+            tag: 'warn',
+            color: 'yellow'
         }
     };
-    private readonly longestFileName: number;
-    private readonly longestTagName: number;
+    private readonly longestFileName: number = 0;
+    private readonly longestTagName: number= 0;
     private stream = process.stdout;
 
     /**
@@ -67,14 +61,32 @@ export class Charlog {
      */
     constructor (options: Options = {}) {
 
-        this.tag = options.tag || 'MAIN';
-        this.interactive = options.interactive || false;
-        this.uppercaseTag = options.uppercaseTag || true;
-        this.date = options.date || false;
-        this.timestamp = options.timestamp || false;
-        this.filename = options.filename || true;
-        this.longestFileName = options.setFileLength + 2 || 0;
-        this.longestTagName = options.setTagLength + 2 || 0;
+        let pkgConfig = JSON.parse(fs.readFileSync(process.cwd() + '/package.json', {encoding: 'utf-8'}));
+        let usePkg = !!pkgConfig.charlog;
+        if (usePkg) {
+            pkgConfig = pkgConfig.charlog;
+            this.tag = typeof pkgConfig.tag === 'undefined' ? 'MAIN' : pkgConfig.tag;
+            this.interactive = typeof pkgConfig.interactive === 'undefined' ? false : pkgConfig.interactive;
+            this.uppercaseTag = typeof pkgConfig.uppercaseTag === 'undefined' ? true : pkgConfig.uppercaseTag;
+            this.date = typeof pkgConfig.date === 'undefined' ? false : pkgConfig.date;
+            this.timestamp = typeof pkgConfig.timestamp === 'undefined' ? true : pkgConfig.timestamp;
+            this.filename = typeof pkgConfig.filename === 'undefined' ? true : pkgConfig.filename;
+            this.longestFileName = typeof pkgConfig.longestFileName === 'undefined' ? 0 : pkgConfig.longestFileName + 2;
+            this.longestTagName = typeof pkgConfig.longestTagName === 'undefined' ? 0 : pkgConfig.longestTagName + 2;
+            for (let logger in pkgConfig.loggers) {
+                if  (!pkgConfig.loggers.hasOwnProperty(logger)) continue;
+                this.loggers[logger] = pkgConfig.loggers[logger];
+            }
+        }
+
+        this.tag = options.tag || this.tag;
+        this.interactive = options.interactive || this.interactive;
+        this.uppercaseTag = options.uppercaseTag || this.uppercaseTag;
+        this.date = options.date || this.date;
+        this.timestamp = options.timestamp || this.timestamp;
+        this.filename = options.filename || this.filename;
+        this.longestFileName = options.setFileLength + 2 || this.longestFileName;
+        this.longestTagName = options.setTagLength + 2 || this.longestTagName;
 
         for (let logger in options.loggers) {
             if  (!options.loggers.hasOwnProperty(logger)) continue;

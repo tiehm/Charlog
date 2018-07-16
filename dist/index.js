@@ -1,19 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var fs = require("fs");
 var path = require("path");
 var readline = require("readline");
 var moment = require("moment");
 var chalk_1 = require("chalk");
-function pad(content, length) {
-    if (content.length >= length)
-        return content;
-    if (length < 1)
-        return content;
-    for (var i = 0; i < (length - content.length); i++) {
-        content += " ";
-    }
-    return content;
-}
+var pad = require("pad");
 var Charlog = /** @class */ (function () {
     /**
      *
@@ -38,7 +30,9 @@ var Charlog = /** @class */ (function () {
         this.interactive = false;
         this.uppercaseTag = true;
         this.before = false;
-        this.date = true;
+        this.tag = 'MAIN';
+        this.date = false;
+        this.timestamp = true;
         this.filename = true;
         this.loggers = {
             error: {
@@ -52,17 +46,41 @@ var Charlog = /** @class */ (function () {
             success: {
                 tag: 'success',
                 color: 'green'
+            },
+            warn: {
+                tag: 'warn',
+                color: 'yellow'
             }
         };
+        this.longestFileName = 0;
+        this.longestTagName = 0;
         this.stream = process.stdout;
-        this.tag = options.tag || 'MAIN';
-        this.interactive = options.interactive || false;
-        this.uppercaseTag = options.uppercaseTag || true;
-        this.date = options.date || false;
-        this.timestamp = options.timestamp || false;
-        this.filename = options.filename || true;
-        this.longestFileName = options.setFileLength + 2 || 0;
-        this.longestTagName = options.setTagLength + 2 || 0;
+        var pkgConfig = JSON.parse(fs.readFileSync(process.cwd() + '/package.json', { encoding: 'utf-8' }));
+        var usePkg = !!pkgConfig.charlog;
+        if (usePkg) {
+            pkgConfig = pkgConfig.charlog;
+            this.tag = typeof pkgConfig.tag === 'undefined' ? 'MAIN' : pkgConfig.tag;
+            this.interactive = typeof pkgConfig.interactive === 'undefined' ? false : pkgConfig.interactive;
+            this.uppercaseTag = typeof pkgConfig.uppercaseTag === 'undefined' ? true : pkgConfig.uppercaseTag;
+            this.date = typeof pkgConfig.date === 'undefined' ? false : pkgConfig.date;
+            this.timestamp = typeof pkgConfig.timestamp === 'undefined' ? true : pkgConfig.timestamp;
+            this.filename = typeof pkgConfig.filename === 'undefined' ? true : pkgConfig.filename;
+            this.longestFileName = typeof pkgConfig.longestFileName === 'undefined' ? 0 : pkgConfig.longestFileName + 2;
+            this.longestTagName = typeof pkgConfig.longestTagName === 'undefined' ? 0 : pkgConfig.longestTagName + 2;
+            for (var logger in pkgConfig.loggers) {
+                if (!pkgConfig.loggers.hasOwnProperty(logger))
+                    continue;
+                this.loggers[logger] = pkgConfig.loggers[logger];
+            }
+        }
+        this.tag = options.tag || this.tag;
+        this.interactive = options.interactive || this.interactive;
+        this.uppercaseTag = options.uppercaseTag || this.uppercaseTag;
+        this.date = options.date || this.date;
+        this.timestamp = options.timestamp || this.timestamp;
+        this.filename = options.filename || this.filename;
+        this.longestFileName = options.setFileLength + 2 || this.longestFileName;
+        this.longestTagName = options.setTagLength + 2 || this.longestTagName;
         for (var logger in options.loggers) {
             if (!options.loggers.hasOwnProperty(logger))
                 continue;
