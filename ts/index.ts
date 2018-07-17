@@ -5,7 +5,9 @@ import * as moment   from 'moment';
 import chalk         from 'chalk';
 import * as pad      from 'pad';
 
-export class Charlog {
+export class Charlog implements Charlog {
+
+    [x: string]: any;
 
     /**
      * @typedef Options
@@ -21,14 +23,14 @@ export class Charlog {
      * @property [loggers] Custom loggers
      */
 
-    private readonly interactive: boolean = false;
-    private readonly uppercaseTag: boolean = true;
-    private before: boolean = false;
-    private readonly tag: string = 'MAIN';
-    private readonly date: boolean = false;
-    private readonly timestamp: boolean = true;
-    private readonly filename: boolean = true;
-    private loggers: {
+    readonly interactive: boolean = false;
+    readonly uppercaseTag: boolean = true;
+    before: boolean = false;
+    readonly tag: string = 'MAIN';
+    readonly date: boolean = false;
+    readonly timestamp: boolean = true;
+    readonly filename: boolean = true;
+    loggers: {
         [name: string]: {
             tag: string,
             color: string
@@ -51,9 +53,9 @@ export class Charlog {
             color: 'yellow'
         }
     };
-    private readonly longestFileName: number = 0;
-    private readonly longestTagName: number= 0;
-    private stream = process.stdout;
+    readonly longestFileName: number = 0;
+    readonly longestTagName: number= 0;
+    readonly stream = process.stdout;
 
     /**
      *
@@ -126,15 +128,13 @@ export class Charlog {
         return this.filename ? pad(`[${this.filenameFormat}] `, this.longestFileName ) : '';
     }
 
-    private color (type: string) : string {
-        return this.loggers[type].color;
-    }
-
     private get tagFormat () : string {
         return pad(this.uppercaseTag ? `[${this.tag.toUpperCase()}]` : `[${this.tag}]`, this.longestTagName);
     }
 
-
+    private color (type: string) : string {
+        return this.loggers[type].color;
+    }
 
     private logger (type: string, msg: string, ...args: string[]) : void {
 
@@ -147,7 +147,7 @@ export class Charlog {
 
     }
 
-    private write (content: string) {
+    private write (content: string) : void {
 
         if (this.interactive && this.before) {
             readline.moveCursor(this.stream, 0, -1);

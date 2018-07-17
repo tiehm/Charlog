@@ -126,9 +126,6 @@ var Charlog = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Charlog.prototype.color = function (type) {
-        return this.loggers[type].color;
-    };
     Object.defineProperty(Charlog.prototype, "tagFormat", {
         get: function () {
             return pad(this.uppercaseTag ? "[" + this.tag.toUpperCase() + "]" : "[" + this.tag + "]", this.longestTagName);
@@ -136,6 +133,9 @@ var Charlog = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
+    Charlog.prototype.color = function (type) {
+        return this.loggers[type].color;
+    };
     Charlog.prototype.logger = function (type, msg) {
         var args = [];
         for (var _i = 2; _i < arguments.length; _i++) {
